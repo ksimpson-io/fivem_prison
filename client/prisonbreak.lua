@@ -58,20 +58,20 @@ function CreatePrisonZone()
         if not isPointInside then
 
             if LocalPlayer.state.inJail then
-                TriggerServerEvent("prison:server:SecurityLockdown")
+                TriggerServerEvent("frudy_prison:server:SecurityLockdown")
                 exports['ps-dispatch']:PrisonBreak()
-                TriggerEvent("prison:client:destroyAllTargets")
+                TriggerEvent("frudy_prison:client:destroyAllTargets")
                 QBCore.Functions.Notify("Escaped", "success")
-                TriggerServerEvent("prison:server:GiveMoneyBack")
+                TriggerServerEvent("frudy_prison:server:GiveMoneyBack")
                 TriggerServerEvent("QBCore:Server:SetMetaData", "jailtime", 0)
                 TriggerServerEvent("QBCore:Server:SetMetaData", "jailstatus", "free")
                 TriggerServerEvent("QBCore:Server:SetMetaData", "freedomitems", "empty")
                 TriggerServerEvent("QBCore:Server:SetMetaData", "jailpockets", "empty")
 
                 SetTimeout(60000 * 2, function()
-                    if not LocalPlayer.state.inJail then TriggerEvent("prison:client:destroyAllTargets") end -- in case you get rejailed for some reason
+                    if not LocalPlayer.state.inJail then TriggerEvent("frudy_prison:client:destroyAllTargets") end -- in case you get rejailed for some reason
                     if not LocalPlayer.state.prisonItems then
-                        TriggerServerEvent("prison:server:GiveMoneyBack")
+                        TriggerServerEvent("frudy_prison:server:GiveMoneyBack")
                         TriggerServerEvent("QBCore:Server:SetMetaData", "jailtime", 0)
                         TriggerServerEvent("QBCore:Server:SetMetaData", "jailstatus", "free")
                         TriggerServerEvent("QBCore:Server:SetMetaData", "freedomitems", "empty")
@@ -105,7 +105,7 @@ end
 
 -- Events
 
-RegisterNetEvent('prison:client:prisonBreak', function()
+RegisterNetEvent('frudy_prison:client:prisonBreak', function()
     if currentGate ~= 0 and not securityLockdown and not Gates[currentGate].hit then
         QBCore.Functions.Progressbar("hack_gate", "Setting up the prison break..", math.random(5000, 10000), false, true, {
             disableMovement = true,
@@ -133,15 +133,15 @@ RegisterNetEvent('prison:client:prisonBreak', function()
                             flags = 0,
                         }, {}, {}, function()
                             ClearPedTasks(PlayerPedId())
-                            TriggerServerEvent('prison:server:RemovePrisonBreakItems')
-                            TriggerServerEvent("prison:server:SetGateHit", currentGate)
+                            TriggerServerEvent('frudy_prison:server:RemovePrisonBreakItems')
+                            TriggerServerEvent("frudy_prison:server:SetGateHit", currentGate)
                             TriggerServerEvent('qb-doorlock:server:updateState', Gates[currentGate].gatekey, false)
                         end, function()
                             QBCore.Functions.Notify("Canceled...", "error")
                             ClearPedTasks(PlayerPedId())
                         end)
                     else
-                        TriggerServerEvent("prison:server:SecurityLockdown")
+                        TriggerServerEvent("frudy_prison:server:SecurityLockdown")
                         QBCore.Functions.Notify("You failed the hack!", "error")
                         ClearPedTasks(PlayerPedId())
                     end
@@ -160,15 +160,15 @@ RegisterNetEvent('prison:client:prisonBreak', function()
                             flags = 0,
                         }, {}, {}, function()
                             ClearPedTasks(PlayerPedId())
-                            TriggerServerEvent('prison:server:RemovePrisonBreakItems')
-                            TriggerServerEvent("prison:server:SetGateHit", currentGate)
+                            TriggerServerEvent('frudy_prison:server:RemovePrisonBreakItems')
+                            TriggerServerEvent("frudy_prison:server:SetGateHit", currentGate)
                             TriggerServerEvent('qb-doorlock:server:updateState', Gates[currentGate].gatekey, false)
                         end, function()
                             QBCore.Functions.Notify("Canceled...", "error")
                             ClearPedTasks(PlayerPedId())
                         end)
                     else
-                        TriggerServerEvent("prison:server:SecurityLockdown")
+                        TriggerServerEvent("frudy_prison:server:SecurityLockdown")
                         QBCore.Functions.Notify("You failed the hack!", "error")
                         ClearPedTasks(PlayerPedId())
                     end
@@ -180,7 +180,7 @@ RegisterNetEvent('prison:client:prisonBreak', function()
     end
 end)
 
-RegisterNetEvent('prison:client:SetLockDown', function(isLockdown)
+RegisterNetEvent('frudy_prison:client:SetLockDown', function(isLockdown)
     securityLockdown = isLockdown
     QBCore.Functions.GetPlayerData(function(PlayerData)
         if securityLockdown and PlayerData.metadata.jailstatus == "jailed" then
@@ -189,7 +189,7 @@ RegisterNetEvent('prison:client:SetLockDown', function(isLockdown)
     end)
 end)
 
-RegisterNetEvent('prison:client:PrisonBreakAlert', function()
+RegisterNetEvent('frudy_prison:client:PrisonBreakAlert', function()
     TriggerEvent('qb-policealerts:client:AddPoliceAlert', {
         timeOut = 10000,
         alertTitle = "Prison outbreak",
@@ -207,7 +207,7 @@ RegisterNetEvent('prison:client:PrisonBreakAlert', function()
     })
 
     local BreakBlip = AddBlipForCoord(Config.Locations.Lobby.coords.x, Config.Locations.Lobby.coords.y, Config.Locations.Lobby.coords.z)
-    TriggerServerEvent('prison:server:JailAlarm')
+    TriggerServerEvent('frudy_prison:server:JailAlarm')
 	SetBlipSprite(BreakBlip , 161)
 	SetBlipScale(BreakBlip , 3.0)
 	SetBlipColour(BreakBlip, 3)
@@ -223,11 +223,11 @@ RegisterNetEvent('prison:client:PrisonBreakAlert', function()
     RemoveBlip(BreakBlip)
 end)
 
-RegisterNetEvent('prison:client:SetGateHit', function(key, isHit)
+RegisterNetEvent('frudy_prison:client:SetGateHit', function(key, isHit)
     Gates[key].hit = isHit
 end)
 
-RegisterNetEvent('prison:client:JailAlarm', function(toggle)
+RegisterNetEvent('frudy_prison:client:JailAlarm', function(toggle)
     if toggle then
         local alarmIpl = GetInteriorAtCoordsWithType(1787.004,2593.1984,45.7978, "int_prison_main")
 

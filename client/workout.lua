@@ -54,7 +54,7 @@ function Hang()
 end
 
 ---------------------------------------------------------------------- EVENTS
-RegisterNetEvent("prison:client:DoChinUp", function()
+RegisterNetEvent("frudy_prison:client:DoChinUp", function()
     if not training and not resting then
         Hang()
     else
@@ -62,7 +62,7 @@ RegisterNetEvent("prison:client:DoChinUp", function()
     end
 end)
 
-RegisterNetEvent('prison:client:DoYoga', function()
+RegisterNetEvent('frudy_prison:client:DoYoga', function()
     local ped = PlayerPedId()
 
     if not training and not resting then
@@ -118,13 +118,13 @@ RegisterNetEvent('prison:client:DoYoga', function()
     end
 end)
 
-RegisterNetEvent("prison:client:BikeMenu", function ()
+RegisterNetEvent("frudy_prison:client:BikeMenu", function ()
     local header = {
         { isMenuHeader = true, icon = "fas fa-person-biking", header = "<strong>Rent a Bike<strong>" },
         {
             icon = "fas fa-bicycle",
             header = "<strong>BMX : $90<strong>",
-            params = { event = "prison:client:SpawnBike", }
+            params = { event = "frudy_prison:client:SpawnBike", }
         },
         {
             icon = "fas fa-xmark",
@@ -135,11 +135,11 @@ RegisterNetEvent("prison:client:BikeMenu", function ()
     exports["qb-menu"]:openMenu(header)
 end)
 
-RegisterNetEvent('prison:client:SpawnBike', function(bmx)
+RegisterNetEvent('frudy_prison:client:SpawnBike', function(bmx)
     if bikesOut == 5 then
         QBCore.Functions.Notify("There are too many bikes out", "error")
     else
-        QBCore.Functions.TriggerCallback("prison:server:TakeMoney", function(cb)
+        QBCore.Functions.TriggerCallback("frudy_prison:server:TakeMoney", function(cb)
         local paid = cb
             if paid then
                 local vehicle = "bmx"
@@ -161,7 +161,7 @@ CreateThread(function()
         options = {
             {
                 type = "client",
-                event = "prison:client:DoYoga",
+                event = "frudy_prison:client:DoYoga",
                 icon = "fas fa-yin-yang",
                 label = "Do yoga",
             },
@@ -184,11 +184,10 @@ CreateThread(function()
     local options = {
         {
             label = "Rent a Bike",
-            event ="prison:client:BikeMenu",
+            event ="frudy_prison:client:BikeMenu",
 			canInteract = function() return LocalPlayer.state.inJail or QBCore.Functions.GetPlayerData().job.type == "leo" end,
         }
     }
     AddTarget(bikePed, options)
     pedSpawned = true
 end)
-

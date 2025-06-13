@@ -7,7 +7,7 @@ RegisterNetEvent("QBCore:Client:OnJobUpdate", function(JobInfo)
     PlayerJob = JobInfo
 end)
 
-RegisterNetEvent("prison:client:destroyAllTargets", function()
+RegisterNetEvent("frudy_prison:client:destroyAllTargets", function()
 	for _,v in pairs(TargetsTable) do
 		exports["mc9-interact"]:RemoveInteraction(v)
 	end
@@ -17,20 +17,20 @@ RegisterNetEvent("QBCore:Client:OnPlayerUnload", function()
 	CurrentJob = nil
 	JobLocations = {}
 	ClearPrisonBlips()
-	TriggerEvent("prison:client:RemoveLockers")
+	TriggerEvent("frudy_prison:client:RemoveLockers")
 end)
 
 AddEventHandler("onResourceStop", function(resourceName)
     if GetCurrentResourceName() ~= resourceName then return end
 	ClearPrisonBlips()
-	TriggerEvent("prison:client:RemoveLockers")
+	TriggerEvent("frudy_prison:client:RemoveLockers")
 end)
 
-RegisterNetEvent("prison:client:ChangeStatus", function()
+RegisterNetEvent("frudy_prison:client:ChangeStatus", function()
 	UpdatePrisonState("inJail", false)
 end)
 
-RegisterNetEvent("prison:client:Enter", function(time)
+RegisterNetEvent("frudy_prison:client:Enter", function(time)
 	local sentence = IsLifer() and "life" or time.." months"
 	QBCore.Functions.Notify("In jail for " ..sentence, "error")
 
@@ -48,8 +48,8 @@ RegisterNetEvent("prison:client:Enter", function(time)
 
 	UpdateAllPrisonStates(true, time, CurrentJob)
 	TriggerServerEvent("QBCore:Server:SetMetaData", "jailstatus", "jailed")
-	TriggerServerEvent("prison:server:updateJailTime", PrisonStates.jailTime)
-	TriggerServerEvent("prison:server:SaveFreedomItems")
+	TriggerServerEvent("frudy_prison:server:updateJailTime", PrisonStates.jailTime)
+	TriggerServerEvent("frudy_prison:server:SaveFreedomItems")
 	TriggerServerEvent("InteractSound_SV:PlayOnSource", "jail", 0.5)
 	CreateCellsBlip()
 	CreateAllTargets()
@@ -61,19 +61,19 @@ RegisterNetEvent("prison:client:Enter", function(time)
 	StartJailTIme()
 end)
 
-RegisterNetEvent("prison:client:checkTime", function()
+RegisterNetEvent("frudy_prison:client:checkTime", function()
 	VerifyState("jailTime")
 	if PrisonStates.jailTime <= 0 then LeaveJail() return end
 	QBCore.Functions.Notify(PrisonStates.jailTime .. " months left", "error")
 end)
 
-RegisterNetEvent("prison:client:UnjailPerson", function()
+RegisterNetEvent("frudy_prison:client:UnjailPerson", function()
 	if QBCore.Functions.GetPlayerData().metadata.jailstatus == "jailed" or LocalPlayer.state.inJail then
 		LeaveJail()
 	end
 end)
 
-RegisterNetEvent("prison:client:jobMenu", function()
+RegisterNetEvent("frudy_prison:client:jobMenu", function()
 	local jobMenu = {
 		{ isHeader = true, header = "Prison Work", isMenuHeader = true },
 	}
@@ -82,7 +82,7 @@ RegisterNetEvent("prison:client:jobMenu", function()
 			header = v.label,
 			txt = v.desc,
 			icon = v.icon,
-			params = { event = "prison:client:getJob", args = k }
+			params = { event = "frudy_prison:client:getJob", args = k }
 		}
 	end
 	jobMenu[#jobMenu+1] = {
@@ -93,7 +93,7 @@ RegisterNetEvent("prison:client:jobMenu", function()
     exports["qb-menu"]:openMenu(jobMenu)
 end)
 
-RegisterNetEvent("prison:client:getJob", function(newJob)
+RegisterNetEvent("frudy_prison:client:getJob", function(newJob)
 	if not Config.PrisonJobs[newJob] then return end
 	if (LocalPlayer.state.prisonJob == newJob) then QBCore.Functions.Notify("You're already a(n) "..Config.PrisonJobs[CurrentJob].label, "error") return end
 
@@ -104,7 +104,7 @@ RegisterNetEvent("prison:client:getJob", function(newJob)
 	CreatePrisonJob()
 end)
 
-RegisterNetEvent("prison:client:craftingMenu", function()
+RegisterNetEvent("frudy_prison:client:craftingMenu", function()
 	local crafting = {
 		{ header = "Prison Crafting", isMenuHeader = true, },
 	}
@@ -119,14 +119,14 @@ RegisterNetEvent("prison:client:craftingMenu", function()
 			header = QBCore.Shared.Items[ v.receive].label,
 			text = text,
 			img = v.receive,
-			params = { event = "prison:client:craft", args = k },
+			params = { event = "frudy_prison:client:craft", args = k },
 		}
 	end
 	exports["qb-menu"]:openMenu(crafting)
 end)
 
-RegisterNetEvent("prison:client:craft", function(index)
-	QBCore.Functions.TriggerCallback("prison:server:hasMats", function(hasMaterials)
+RegisterNetEvent("frudy_prison:client:craft", function(index)
+	QBCore.Functions.TriggerCallback("frudy_prison:server:hasMats", function(hasMaterials)
 		if (hasMaterials) then
 			CraftItem(index)
 		else
@@ -136,7 +136,7 @@ RegisterNetEvent("prison:client:craft", function(index)
 	end, Config.CraftingItems[index].materials)
 end)
 
-RegisterNetEvent("prison:client:checkIn", function()
+RegisterNetEvent("frudy_prison:client:checkIn", function()
 	TriggerEvent("animations:client:EmoteCommandStart", {"notepad"})
 	QBCore.Functions.Progressbar("hospital_checkin", "Checking Into Infirmary", 2000, false, true, {
 		disableMovement = true,
@@ -148,7 +148,7 @@ RegisterNetEvent("prison:client:checkIn", function()
 		local bedId = GetBed()
 		if bedId then
 			Config.Beds[bedId].taken = true
-			TriggerEvent("prison:client:getTreated", bedId)
+			TriggerEvent("frudy_prison:client:getTreated", bedId)
 		else
 			QBCore.Functions.Notify("All beds are taken", "error")
 		end
@@ -157,7 +157,7 @@ RegisterNetEvent("prison:client:checkIn", function()
 	end)
 end)
 
-RegisterNetEvent("prison:client:getTreated", function(bedData)
+RegisterNetEvent("frudy_prison:client:getTreated", function(bedData)
 	local data = Config.Beds[bedData]
 	local player = PlayerPedId()
 
@@ -204,15 +204,15 @@ end)
 
 RegisterNetEvent("QBCore:Client:OnPlayerLoaded", function()
 	CreatePrisonZone()
-	TriggerEvent("prison:client:SpawnLockers")
+	TriggerEvent("frudy_prison:client:SpawnLockers")
 
-	local active = mc9.callback.await("prison:server:IsAlarmActive")
-	if active then TriggerEvent("prison:client:JailAlarm", true) end
-	LocalPlayer.state.jailTime = mc9.callback.await("prison:server:isInJail")
+	local active = lib.callback.await("frudy_prison:server:IsAlarmActive", false)
+	if active then TriggerEvent("frudy_prison:client:JailAlarm", true) end
+	LocalPlayer.state.jailTime = lib.callback.await("frudy_prison:server:isInJail", false)
 
 	if LocalPlayer.state.jailTime then
-		TriggerEvent("prison:client:Enter", LocalPlayer.state.jailTime)
-		if IsLifer() then TriggerServerEvent("prison:server:updateJailTime", 999) end
+		TriggerEvent("frudy_prison:client:Enter", LocalPlayer.state.jailTime)
+		if IsLifer() then TriggerServerEvent("frudy_prison:server:updateJailTime", 999) end
 	end
 end)
 
@@ -229,7 +229,7 @@ function StartJailTIme()
 							UpdatePrisonState("jailTime", 0)
 							QBCore.Functions.Notify("Time is up! Check yourself out at the visitors center", "success", 10000)
 						end
-						TriggerServerEvent("prison:server:updateJailTime", LocalPlayer.state.jailTime)
+						TriggerServerEvent("frudy_prison:server:updateJailTime", LocalPlayer.state.jailTime)
 					end
 				else
 					Wait(sleep)

@@ -41,7 +41,7 @@ local function CompleteTask(anim, bartext, targetId)
         disableCombat = true,
     }, {}, {}, {}, function()
         TriggerEvent("animations:client:EmoteCommandStart", {"c"})
-        TriggerServerEvent("mc9-prison:server:jobDone")
+        TriggerServerEvent("frudy_prison:server:jobDone")
     end, function() end)
 end
 
@@ -66,6 +66,6 @@ function CreatePrisonTask()
 	})
 end
 
-RegisterNetEvent("mc9-prison:client:newTask", function()
+RegisterNetEvent("frudy_prison:client:newTask", function()
     CreatePrisonJob()
 end)

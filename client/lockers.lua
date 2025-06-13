@@ -1,7 +1,7 @@
 QBCore = exports['qb-core']:GetCoreObject()
 local locker = {}
 
-RegisterNetEvent('prison:client:Locker', function()
+RegisterNetEvent('frudy_prison:client:Locker', function()
     local PlayerData = QBCore.Functions.GetPlayerData()
     if PlayerData.metadata.jailstatus == "jailed" then
         QBCore.Functions.Progressbar('opening_prisonlocker', 'OPENING', 2000, false, true, {
@@ -21,7 +21,7 @@ RegisterNetEvent('prison:client:Locker', function()
     end
 end)
 
-RegisterNetEvent('prison:client:ForceOpenLocker', function()
+RegisterNetEvent('frudy_prison:client:ForceOpenLocker', function()
     local lockerInfo = exports['qb-input']:ShowInput({
         header = "Locker",
         submitText = "Open Locker",
@@ -36,7 +36,7 @@ RegisterNetEvent('prison:client:ForceOpenLocker', function()
     })
     if lockerInfo then
         if not lockerInfo.citizenid then return end
-        QBCore.Functions.TriggerCallback('prison:server:DoesStashExist', function(stashExist)
+        QBCore.Functions.TriggerCallback('frudy_prison:server:DoesStashExist', function(stashExist)
             if stashExist then
                 QBCore.Functions.Progressbar('opening_prisonlocker', 'OPENING', 2000, false, true, {
                     disableMovement = true,
@@ -61,11 +61,11 @@ RegisterNetEvent('prison:client:ForceOpenLocker', function()
     end
 end)
 
-RegisterNetEvent('prison:client:RemoveLockers', function()
+RegisterNetEvent('frudy_prison:client:RemoveLockers', function()
     for _,v in pairs(locker) do DeleteObject(v) end
 end)
 
-RegisterNetEvent('prison:client:SpawnLockers', function()
+RegisterNetEvent('frudy_prison:client:SpawnLockers', function()
 	for k, v in pairs(Config.Lockers) do
 		RequestModel(`p_cs_locker_01_s`)
         while not HasModelLoaded(`p_cs_locker_01_s`) do Wait(1) end
@@ -83,14 +83,14 @@ RegisterNetEvent('prison:client:SpawnLockers', function()
             options = {
                 {
                     type = "client",
-                    event = "prison:client:Locker",
+                    event = "frudy_prison:client:Locker",
                     icon = "fas fa-box-open",
                     label = "Locker",
                     canInteract = function() return QBCore.Functions.GetPlayerData().metadata.jailstatus == "jailed" end,
                 },
                 {
                     type = "client",
-                    event = "prison:client:ForceOpenLocker",
+                    event = "frudy_prison:client:ForceOpenLocker",
                     icon = "fas fa-box-open",
                     label = "Force Open Locker",
                     job = { ['police'] = 0, ['lspd'] = 0, ['fib'] = 0, ['bcso'] = 0, },

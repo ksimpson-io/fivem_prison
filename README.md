@@ -1,4 +1,4 @@
-# frudy-prison 🧱
+# frudy_prison 🧱
 
 A modular and streamlined prison system for FiveM — built in Lua with clear logic, server sync, and full extensibility.
 
@@ -47,8 +47,8 @@ This system allows players to be jailed, tracked, and released with support for 
 ## 📦 Installation
 
 1. Download or clone this repository into your `resources` folder.
-2. Rename the folder to `frudy-prison` (optional, but clean).
-3. Add `ensure frudy-prison` to your `server.cfg`.
+2. Rename the folder to `frudy_prison` (optional, but clean).
+3. Add `ensure frudy_prison` to your `server.cfg`.
 4. Make sure the following dependencies are started before it:
    - `ox_lib`
    - `mc9-core` (or replace with your own logic)
@@ -75,10 +75,10 @@ Edit the core logic directly or extend it with your own handlers.
 ```
 Events:
 
-`TriggerEvent('prison:server:JailPlayer', id, time, reason)`
+`TriggerEvent('frudy_prison:server:JailPlayer', id, time, reason)`
 Helpers:
 
-`exports['frudy-prison']:IsInJail() -- Returns true/false on client`
+`exports['frudy_prison']:IsInJail() -- Returns true/false on client`
 
 
 ---

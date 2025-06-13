@@ -152,8 +152,8 @@ CraftItem = function(index)
 		anim = "fixing_a_ped",
 		}, {}, {}, function()
 		QBCore.Functions.Notify("Crafted "..QBCore.Shared.Items[craftedItem].label, "success")
-		TriggerServerEvent("prison:server:GetCraftedItem", craftedItem)
-		TriggerServerEvent("prison:server:RemoveCraftingItems", index)
+		TriggerServerEvent("frudy_prison:server:GetCraftedItem", craftedItem)
+		TriggerServerEvent("frudy_prison:server:RemoveCraftingItems", index)
 		TriggerEvent("animations:client:EmoteCommandStart", {"c"})
 		ClearPedTasks(PlayerPedId())
 	end, function()
@@ -172,7 +172,7 @@ PourDrink = function(drink)
 		disableCombat = true,
 	}, {}, {}, {}, function() -- Done
 		ClearPedTasks(player)
-		TriggerServerEvent("prison:server:drinkPoured", drink)
+		TriggerServerEvent("frudy_prison:server:drinkPoured", drink)
 	end, function() -- Cancel
 		ClearPedTasks(player)
 	end)
@@ -186,7 +186,7 @@ LeaveJail = function()
 	ClearPrisonBlips()
 	ClearPrisonStates()
 	JobLocations = {}
-	TriggerServerEvent("prison:server:updateJailTime", 0)
+	TriggerServerEvent("frudy_prison:server:updateJailTime", 0)
 	QBCore.Functions.Notify("Freedom! Retrieve your belongs at the desk", "success")
 	DoScreenFadeOut(500)
 
@@ -196,7 +196,7 @@ LeaveJail = function()
 	SetEntityHeading(PlayerPedId(), Config.Locations.Lobby.coords.w)
 	TriggerEvent("fivem-appearance:client:reloadSkin")
 	TriggerServerEvent("QBCore:Server:SetMetaData", "jailpockets", QBCore.Functions.GetPlayerData().items)
-	TriggerServerEvent("prison:server:yeetItems")
+	TriggerServerEvent("frudy_prison:server:yeetItems")
 	Wait(500)
 	DoScreenFadeIn(1000)
 end
@@ -229,7 +229,7 @@ CreateAllTargets = function()
 		local options = {
 			{
 				label = "Receive Possessions",
-				action = function() TriggerServerEvent("prison:server:GiveFreedomItems") end,
+				action = function() TriggerServerEvent("frudy_prison:server:GiveFreedomItems") end,
 			}
 		}
 
@@ -241,7 +241,7 @@ CreateAllTargets = function()
 		local options = {
 			{
 				label = "Check Time",
-				action = function() TriggerEvent("prison:client:checkTime") end,
+				action = function() TriggerEvent("frudy_prison:client:checkTime") end,
 				canInteract = function()
 					local playerData = QBCore.Functions.GetPlayerData()
 					return playerData.metadata.jailstatus == "jailed" or LocalPlayer.state.inJail
@@ -257,7 +257,7 @@ CreateAllTargets = function()
 		local options = {
 			{
 				label = "Job Assignments",
-				action = function() TriggerEvent("prison:client:jobMenu") end,
+				action = function() TriggerEvent("frudy_prison:client:jobMenu") end,
 				canInteract = function()
 					local playerData = QBCore.Functions.GetPlayerData()
 					return playerData.metadata.jailstatus == "jailed" or LocalPlayer.state.inJail
@@ -281,7 +281,7 @@ CreateAllTargets = function()
 			},
 			{
 				label = "Check In",
-				action = function() TriggerEvent("prison:client:checkIn") end,
+				action = function() TriggerEvent("frudy_prison:client:checkIn") end,
 				canInteract = function()
 					local playerData = QBCore.Functions.GetPlayerData()
 					return playerData.metadata.jailstatus == "jailed" or LocalPlayer.state.inJail or playerData.job.type == "leo"
@@ -348,7 +348,7 @@ CreateAllTargets = function()
 		local id = "prisonCrafting"..k
 		local options = {
 			{
-				event = "prison:client:craftingMenu",
+				event = "frudy_prison:client:craftingMenu",
 				targeticon = "fas fa-toolbox",
 				label = "Prison Crafting",
 				canInteract = function() return QBCore.Functions.GetPlayerData().metadata.jailstatus == "jailed" or LocalPlayer.state.inJail end,
@@ -362,7 +362,7 @@ CreateAllTargets = function()
 		local id = "prisonChinUps"..k
 		local options = {
 			{
-				event = "prison:client:DoChinUp",
+				event = "frudy_prison:client:DoChinUp",
 				label = "Chin-Ups",
 			},
 		}
@@ -387,7 +387,7 @@ CreateAllTargets = function()
 		local options = {
 			{
 				label = "Break Out",
-				event = "prison:client:prisonBreak",
+				event = "frudy_prison:client:prisonBreak",
 				canInteract = function() return HasPrisonBreakItems() and QBCore.Functions.GetPlayerData().metadata.jailstatus == "jailed" or InJail end
 			},
 		}
