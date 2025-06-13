@@ -29,6 +29,11 @@ This system allows players to be jailed, tracked, and released with support for 
 
 ---
 
+📸 Preview
+(Add a screenshot or clip of jail spawn, time tracking UI, or command usage)
+
+---
+
 ## 🧩 Dependencies
 
 | Resource   | Purpose                                 |
@@ -75,14 +80,18 @@ Helpers:
 
 `exports['frudy-prison']:IsInJail() -- Returns true/false on client`
 
-📸 Preview
-(Add a screenshot or clip of jail spawn, time tracking UI, or command usage)
 
-🔐 License
+---
+
+## 🔐 License
+
 This script is for demo/showcase purposes only.
-Do not resell or repackage without explicit permission.
+Feel free to fork or use with credit. Do not resell or redistribute as your own.
 
-📄 Credits & Disclaimer
-This system was originally created while working with MC9 Gaming. All logic and structure in this version were written by me (frudy) and adapted for independent use.
+---
 
-No proprietary assets or private systems from mc9-core are distributed here. Replace or rebuild any private logic to fit your framework.
+## 📄 Credits & Disclaimer
+
+This system was originally created while working with **MC9 Gaming**. All logic, structure, and UI implementation in this repository were written by me (frudy), and this version has been adapted for open demonstration and personal development use.
+
+No proprietary assets, private resources, or protected logic from **mc9-core** are distributed here. If you use this system, you will need to replace or recreate any internal MC9 dependencies.
